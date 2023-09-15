@@ -1,11 +1,19 @@
+import 'express-async-errors'
+require('dotenv').config();
+import "reflect-metadata";
 import express from 'express';
+import { AppDataSource } from "./data-source";
 
-const app = express();
 
-app.get('/', (request, response) => {
-  return response.send('Hello World!');
-});
+AppDataSource.initialize().then(() =>{
+  const app = express()
 
-app.listen(3333, () => {
-  console.log('HTTP Server running!');
-});
+  
+  app.use(express.json())
+
+  app.get('/', (req, res) =>{
+    return res.json('OK!')
+  })
+
+  return app.listen(process.env.PORT)
+})
